@@ -1,14 +1,21 @@
-# Use PHP with Apache
-FROM php:8.2-apache
+# Use the devopsedu/webapp as the base image
+FROM devopsedu/webapp
 
-# Enable Apache mod_rewrite if needed
-RUN a2enmod rewrite
+# Set the working directory in the container
+WORKDIR /tmp/www/html
 
-# Install PHP extensions (if needed, e.g., mysqli)
-# RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Install git to clone the repository
+RUN apt-get update && apt-get install -y git
 
-# Copy all files from current directory to Apache root
-COPY . /var/www/html/
+# Clone the PHP application repository into the working directory
+RUN git clone https://github.com/Mdsltn/Project_dev.git .
 
-# Expose the Apache port
+# Optional: Remove the .git folder to clean up the container
+RUN rm -rf .git
+
+# Expose port 80 to make the app accessible
 EXPOSE 80
+
+# Start the Apache server
+CMD ["apachectl", "-D", "FOREGROUND"]
+
