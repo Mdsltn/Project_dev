@@ -18,3 +18,4 @@ EXPOSE 80
 
 # Start the Apache server
 CMD ["apachectl", "-D", "FOREGROUND"]
+
